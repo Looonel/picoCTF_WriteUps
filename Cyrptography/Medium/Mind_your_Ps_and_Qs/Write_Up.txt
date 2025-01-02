@@ -1,0 +1,90 @@
+The challenge gives you a file to download. Upon downloading the file and printing its contents out, we get this:
+
+Decrypt my super sick RSA:
+c: 62324783949134119159408816513334912534343517300880137691662780895409992760262021
+n: 1280678415822214057864524798453297819181910621573945477544758171055968245116423923
+e: 65537
+
+With the information given from the challenge, we know that this is an RSA which is a type of encryption
+method where it changes the message to numbers and mathematically encrypts it using certain formulas. It
+does this by generating a public and private key to process the encryption and decryption. More information
+in this website: https://www.geeksforgeeks.org/rsa-algorithm-cryptography/
+
+To understand this method better, lets break it down into steps starting with how RSA encryption works:
+1. Start by writing the original unencrypted message. After you got the message you want to encrypt,
+change it to number format. The format can be anything as long as you or the program can understand it
+and it's in the form of numbers. Lets name the variable as 'u'.
+
+2.) We need to pick two prime numbers, it can be anything, these will be the P and Q values.
+
+3.) Multiplying the P and Q values, we will get n (the public key). Which means n = P*Q.
+
+4.) Find Φ(n). Which is basically (P-1)*(Q-1).
+
+5.) Find e (the public exponent). The e must be an integer and at the same time not a factor of Φ(n).
+In most cases, e is a fixed number which is 65537.
+
+6.) Find d (the private key). To do this, you need to use the formula e^-1 mod Φ(n). This mathematical
+method is called modular multiplicative inverse.
+
+6.) Now that we have all the variables needed, we just need to input all of them into the formula: (u^e) mod n.
+Now you have yourself the encrypted message. This method is called modular exponentiation
+
+In order to decrypt the message, all we need are the same variables inputted in a different formula, which is: (c^d) mod n.
+With c being the encrypted message.
+
+After learning how RSA encryption works, I made a python program that would help me with the calulcations as I'm not too good
+at modulars. Here is the program I made:
+
+import codecs
+
+# To process the euclidean algorithm and find the lowest common factor
+def gcd_extended(a, b):
+    if b == 0:
+        return a, 1, 0
+    gcd, x1, y1 = gcd_extended(b, a % b)
+    x = y1
+    y = x1 - (a // b) * y1
+    return gcd, x, y
+
+# Efficient modular multiplicative inverse
+def modInverse(A, M):
+    gcd, x, _ = gcd_extended(A, M)
+    if gcd != 1:
+        return -1  # Modular inverse doesn't exist
+    return x % M
+
+# Efficient modular exponentiation
+def power(x, y, p):
+    res = 1
+    x = x % p  # Reduce x initially to handle large values
+    while y > 0:
+        if y % 2 == 1:  # If y is odd
+            res = (res * x) % p
+        y = y // 2  # Divide y by 2
+        x = (x * x) % p  # Square x and reduce mod p
+    return res
+
+# Calculate phi
+phi = (P - 1) * (Q - 1)
+
+# Calculate the private key (d)
+d = modInverse(e, phi)
+
+# Decrypt the ciphertext
+m = power(c, d, n)
+
+# Print out each variable to make sure all the steps are correct
+print(phi)
+print(d)
+print(m)
+print(hex(m)[2:])
+print(codecs.decode(hex(m)[2:], 'hex').decode('utf-8'))
+
+By running this program, I get this output:
+
+1280678415822214057864524798453297819181234364596418349127352680639289550089776560 (which is the Φ(n))
+449332735606084960351204406909610297301574728466820933515942864925459265983556193 (which is the private key)
+13016382529449106065927291425342535437996222135352905256639555654677400177227645 (which is the decrypted key but still in number format)
+7069636f4354467b736d6131315f4e5f6e305f67306f645f30353031323736377d (which is the decrypted key after converting it to hexadecimals)
+picoCTF{sma11_N_n0_g0od_05012767} (which is the original message)
