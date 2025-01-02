@@ -1,0 +1,8 @@
+At first, with no hints whatsoever other than the fact that it starts with PICOCTF, I thought these were augmented country flags. This is
+beacause some of the flags look like country flags that seem slightly off, such as France, Spain, Japan, Costa Rica, Scotland, etc. But
+when I was trying to find what these flags mean, I stumble across a Facebook post that shows the same flags along with the translation for each flag. 
+Through clicking that picture in Google, it opened up more flag translations and soon enough I found out that these were actually "International Maritime Flags". 
+These are used by people to communicate to ships out on the sea internationally. Things like "Alpha", "Beta", "Charlie", "India", etc. 
+Through a complete table of all the flags I found in Google (which I uploaded in the same folder as this file), I was able to retrieve the flag, which is: 
+
+PICOCTF{F1AG5AND5TUFF}
