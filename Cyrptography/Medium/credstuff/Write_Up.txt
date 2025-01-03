@@ -1,0 +1,22 @@
+The challenge starts off with explaining that there is a leak from the blackmarket website's login credentials. The challenge tells us to find the password to
+the user named 'cultiris' and that the file containing the leaked usernames and passwords are parallel to each other. This means that the user in the first line
+of the leaked usernames file will have the password of the first line of the leaked passwords file and so on.
+
+Upon downloading the given file, you'll have a .tar file named "leak.tar". We have to unzip it to know its contents. I did this by using the "tar xvf" command.
+
+After unzipping it, inside the folder will be two .txt files named "usernames.txt" and "passwords.txt". My first instinct was to print both of the files contents.
+Turns out both files have a large amount of lines that I do not know the range of. But at the very start of the challenge, it did tell us the username that we need
+to find, that is "cultiris". Knowing this, I used the "egrep" command to find if there is such username along with the line which the username is in within the
+file. 
+
+egrep -n cultiris usernames.txt
+  
+Sure enough, it worked. Now I know that the username "cultiris" does exist in the leaked usernames file and its on line 378. However, it would be such a hassle
+for me to search the passwords.txt file until line 378. To counter this, I used the "cat head tail" command to find the 378th line from the passwords.txt file.
+
+cat passwords.txt |head -378|tail -1 This works because it's telling the computer to print out the last line from the first 378 lines.
+
+Through this, I finally got the flag: cvpbPGS{P7e1S_54I35_71Z3}
+
+After looking at it closely, I can tell that this is a caesar cipher with 8 shifts to the right of the original letter. Putting this into a caesar cipher decrypter
+will result in the flag: picoCTF{C7r1F_54V35_71M3}
