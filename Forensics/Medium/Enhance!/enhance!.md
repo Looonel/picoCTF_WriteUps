@@ -1,4 +1,4 @@
-# ![Title](additional-files/enhace-title.png)
+# ![Title](additional-files/enhance-title.png)
 
 ## Description
 
